@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warpcast User Info Frame</title>
+    <meta property="fc:frame" content="vNext" />
+    <meta property="fc:frame:button:1" content="Show User Info" />
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin-bottom: 20px; cursor: pointer; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; padding: 10px; background-color: #f0f0f0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>User Info Frame</h1>
+    <button id="show-info">Show User Info</button>
+    <ul id="user-info"></ul>
+
+    <script>
+        document.getElementById('show-info').addEventListener('click', function() {
+            fetchUserInfo();
+        });
+
+        function fetchUserInfo() {
+            const fid = 19266; // Replace with actual Farcaster ID
+            const url = `https://api.warpcast.com/v1/users/${fid}/casts`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const casts = data.result;
+                    let listHtml = '';
+                    casts.forEach(cast => {
+                        listHtml += `<li>${cast.text}</li>`;
+                    });
+                    document.getElementById('user-info').innerHTML = listHtml;
+                })
+                .catch(error => console.error('Error fetching user info:', error));
+        }
+    </script>
+</body>
+</html>
